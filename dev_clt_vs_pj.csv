@@ -1,0 +1,30 @@
+Dev Revelado — CLT vs PJ, líquido na mão
+Células de entrada (substitua). Fórmulas no Google Sheets: cole e use Arquivo > Importar, depois recrie as fórmulas da coluna B.
+
+campo,valor_exemplo,formula_google_sheets
+Salário bruto CLT (R$/mês),8000,
+INSS descontado CLT (R$/mês),742.12,
+IRRF descontado CLT (R$/mês),618.86,
+Benefícios no holerite (R$/mês),0,
+Nota fiscal PJ (R$/mês),12000,
+Alíquota efetiva DAS PJ,0.06,
+Pró-labore (R$/mês),1518,
+INSS sobre pró-labore,0.11,
+Contador (R$/mês),250,
+
+Líquido mensal CLT,,=B5-B6-B7+B8
+12 líquidos CLT,,=B16*12
+13º (aprox.),,=B16
+Férias + 1/3 (aprox.),,=B16*4/3
+FGTS 8% x 12,,=B5*0.08*12
+CLT na mão no ano (sem FGTS),,=B17+B18+B19
+CLT com FGTS,,=B21+B20
+PJ faturamento 12m,,=B9*12
+DAS no ano,,=B25*B10
+INSS pró-labore no ano,,=B11*B12*12
+Contador no ano,,=B13*12
+PJ na mão no ano,,=B25-B26-B27-B28
+Diferença PJ - CLT (sem FGTS),,=B29-B21
+Diferença mensal,,=B32/12
+
+Isto não é consultoria. Confira tabelas de INSS/IRRF/DAS do ano vigente.
