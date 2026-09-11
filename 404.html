@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Redirecionando…</title>
+<meta name="robots" content="noindex">
+<style>
+  body{font-family:system-ui,-apple-system,sans-serif;background:#0f1115;color:#e8eaed;
+       display:flex;align-items:center;justify-content:center;height:100vh;margin:0;text-align:center}
+  a{color:#7cc4ff}
+</style>
+</head>
+<body>
+<div>
+  <p id="msg">Redirecionando para o material…</p>
+  <p><a id="fallback" href="/forge-offers/">Voltar</a></p>
+</div>
+<script>
+/*
+ * Catch-all /go/<job_id> — 2026-09-11.
+ *
+ * O pipeline escreve https://<host>/go/<job_id> na descricao (ver
+ * services/capture.py). Gerar uma pagina estatica por job nao escala (cada
+ * video teria a sua, e o repo cresceria sem limite), entao o roteamento vive
+ * aqui: GitHub Pages serve este 404.html para QUALQUER caminho inexistente,
+ * inclusive /go/<qualquer-job>.
+ *
+ * O canal e inferido do proprio job_id (o slug aparece nele: "...-dev-revelado-...").
+ * A atribuicao por video vem da URL — o job_id fica no path e, se houver
+ * beacon configurado, vai nele.
+ */
+var ROUTES = {
+  "dev_revelado":        {asset: "/forge-offers/dev_clt_vs_pj.xlsx",       label: "Planilha CLT vs PJ (liquido na mao)"},
+  "boletim_ia_contabil": {asset: "/forge-offers/boletim_ibs_cbs_simples.pdf", label: "PDF: 3 erros IBS/CBS que mudam o DAS"}
+};
+var BEACON = "";  // ex.: "https://<seu-host>/collect" — vazio = sem beacon
+
+var path = window.location.pathname;
+var m = path.match(/\/go\/(.+?)\/?$/);
+if (m) {
+  var jobId = m[1];
+  var canal = null;
+  for (var slug in ROUTES) {
+    if (jobId.indexOf(slug.replace(/_/g, "-")) !== -1 || jobId.indexOf(slug) !== -1) {
+      canal = slug; break;
+    }
+  }
+  var route = ROUTES[canal] || ROUTES["dev_revelado"];
+  document.getElementById("msg").innerHTML = "Baixando: <strong>" + route.label + "</strong>";
+  var fb = document.getElementById("fallback");
+  fb.href = route.asset;
+  fb.textContent = "Clique aqui se o download nao comecar";
+  if (BEACON) {
+    try { (new Image()).src = BEACON + "?job=" + encodeURIComponent(jobId) + "&ch=" + (canal || ""); } catch (e) {}
+  }
+  setTimeout(function () { window.location.replace(route.asset); }, 50);
+} else {
+  window.location.replace("/forge-offers/");
+}
+</script>
+</body>
+</html>
